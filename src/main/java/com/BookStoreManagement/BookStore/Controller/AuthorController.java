@@ -3,6 +3,7 @@ package com.BookStoreManagement.BookStore.Controller;
 import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
 import com.BookStoreManagement.BookStore.Entity.Author;
 import com.BookStoreManagement.BookStore.Service.AuthorService;
+import com.BookStoreManagement.BookStore.Service.IAuthoreService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/authors")
 public class AuthorController {
-    private final AuthorService _authors;
-    public AuthorController(AuthorService _authors) {
+    private final IAuthoreService _authors;
+    public AuthorController(IAuthoreService _authors) {
         this._authors = _authors;
     }
     @PostMapping("/author")

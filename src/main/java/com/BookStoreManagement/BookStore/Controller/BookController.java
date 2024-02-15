@@ -4,6 +4,7 @@ import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
 import com.BookStoreManagement.BookStore.Entity.Book;
 import com.BookStoreManagement.BookStore.Service.BookService;
 
+import com.BookStoreManagement.BookStore.Service.IBookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,9 @@ import java.util.Optional;
 
 public class BookController {
 
-    private final BookService _bookService;
+    private final IBookService _bookService;
 
-    public BookController(BookService bookService){
+    public BookController(IBookService bookService){
         _bookService = bookService;
     }
 

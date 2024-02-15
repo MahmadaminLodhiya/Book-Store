@@ -60,4 +60,24 @@ public class BookService {
         }
         return response;
     }
+
+    public ServicesResponse<Optional<Book>> getbyid(Integer id){
+        ServicesResponse<Optional<Book>> response = new ServicesResponse<>();
+        try {
+            Optional<Book> book = _book.findById(id);
+            if(book.isPresent()){
+
+                response.Data = book;
+
+            }else {
+                throw new Exception("Invelid Book Id");
+            }
+
+        }catch (Exception ex){
+            response.Data = null;
+            response.Success=false;
+            response.Massage=ex.getMessage();
+        }
+        return  response;
+    }
 }

@@ -39,7 +39,10 @@ public class BookController {
     public ResponseEntity<ServicesResponse<List<Book>>> getAllBook(){
         return ResponseEntity.ok(_bookService.getAllBook());
     }
-
+    @PutMapping(path = "/book/{Id}")
+    public ResponseEntity<ServicesResponse<Book>> Updatebook(@PathVariable(value = "Id") Integer Id,@RequestBody Book book ){
+        return  ResponseEntity.ok(_bookService.update(Id,book));
+    }
 
 
 

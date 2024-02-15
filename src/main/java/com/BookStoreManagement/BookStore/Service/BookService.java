@@ -4,6 +4,7 @@ import com.BookStoreManagement.BookStore.Dto.BookDto;
 import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
 import com.BookStoreManagement.BookStore.Entity.Book;
 import com.BookStoreManagement.BookStore.Repository.BookRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +61,29 @@ public class BookService {
         }
         return response;
     }
+    public ServicesResponse<Book> update(Integer id, Book book){
+        ServicesResponse<Book> response = new ServicesResponse<>();
+        try {
+           Book book1 = _book.findById(id).orElseThrow(
+                   ()
+                           -> new EntityNotFoundException(
+                           String.valueOf(id)));
 
+
+               book1.setPrice(book.getPrice());
+               book1.setAuthorId(book.getAuthorId());
+               book1.setTitle(book.getTitle());
+               book1.setIsbn(book.getIsbn());
+              response.Data = _book.save(book1);
+
+
+        }catch (Exception ex){
+            response.Data = null;
+            response.Success=false;
+            response.Massage="Invalid id " +ex.getMessage();
+        }
+        return  response;
+    }
     public ServicesResponse<Optional<Book>> getbyid(Integer id){
         ServicesResponse<Optional<Book>> response = new ServicesResponse<>();
         try {

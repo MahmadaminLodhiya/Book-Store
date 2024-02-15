@@ -1,5 +1,6 @@
 package com.BookStoreManagement.BookStore.Controller;
 
+import com.BookStoreManagement.BookStore.Dto.BookDto;
 import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
 import com.BookStoreManagement.BookStore.Entity.Book;
 import com.BookStoreManagement.BookStore.Service.BookService;
@@ -33,7 +34,7 @@ public class BookController {
         return  ResponseEntity.ok(_bookService.delete(Id));
     }
     @GetMapping(value = "/bookById/{Id}")
-    public ResponseEntity<ServicesResponse<Optional<Book>>> BookByid(@PathVariable Integer Id){
+    public ResponseEntity<ServicesResponse<BookDto>> BookByid(@PathVariable Integer Id){
         return  ResponseEntity.ok(_bookService.getbyid(Id));
     }
     @GetMapping("/GetAllBook")

@@ -2,7 +2,9 @@ package com.BookStoreManagement.BookStore.Service;
 
 import com.BookStoreManagement.BookStore.Dto.BookDto;
 import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
+import com.BookStoreManagement.BookStore.Entity.Author;
 import com.BookStoreManagement.BookStore.Entity.Book;
+import com.BookStoreManagement.BookStore.Repository.AuthorRepository;
 import com.BookStoreManagement.BookStore.Repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +17,11 @@ import java.util.Optional;
 public class BookService implements IBookService {
 
     private final BookRepository _book;
+    private final AuthorRepository _Author;
 
-    public BookService(BookRepository bookRepository){
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository){
         _book = bookRepository;
+        _Author = authorRepository;
     }
 
     public ServicesResponse<List<Book>> getAllBook(){
@@ -85,19 +89,25 @@ public class BookService implements IBookService {
         return  response;
     }
 
-    public ServicesResponse<Optional<Book>> getbyid(Integer id){
-        ServicesResponse<Optional<Book>> response = new ServicesResponse<>();
+    public ServicesResponse<BookDto> getbyid(Integer id){
+        ServicesResponse<BookDto> response = new ServicesResponse<>();
         try {
-            Optional<Book> book = _book.findById(id);
-            if(book.isPresent()){
+            Book book = _book.findById(id).orElseThrow(
+                    ()-> new EntityNotFoundException("Invalid Id"+
+                            String.valueOf(id)));
 
-                response.Data = book;
+            Author author = _Author.findById(book.getAuthorId()).orElseThrow(
+                        () -> new EntityNotFoundException("Invalid Author Id"+
+                                String.valueOf(id)));
 
-            }else {
-                throw new Exception("Invelid Book Id");
+                response.Data= new BookDto();
+                response.Data.setAuthor(author);
+                response.Data.setPrice(book.getPrice());
+                response.Data.setIsbn(book.getIsbn());
+                response.Data.setTitle(book.getTitle());
+
             }
-
-        }catch (Exception ex){
+        catch (Exception ex){
             response.Data = null;
             response.Success=false;
             response.Massage=ex.getMessage();

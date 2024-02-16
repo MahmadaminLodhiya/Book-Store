@@ -1,9 +1,11 @@
 package com.BookStoreManagement.BookStore.Controller;
 
+import com.BookStoreManagement.BookStore.Dto.BookDto;
 import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
 import com.BookStoreManagement.BookStore.Entity.Book;
 import com.BookStoreManagement.BookStore.Service.BookService;
 
+import com.BookStoreManagement.BookStore.Service.IBookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,29 +17,50 @@ import java.util.Optional;
 
 public class BookController {
 
-    private final BookService _bookService;
+    private final IBookService _bookService;
 
-    public BookController(BookService bookService){
+    public BookController(IBookService bookService){
         _bookService = bookService;
     }
 
 
-     @PostMapping("/Addbook")
+     @PostMapping("/AddBook")
    public ResponseEntity<ServicesResponse<String>> AddNewBook(@RequestBody Book book){
-        return  ResponseEntity.ok(_bookService.AddBook(book));
+         ServicesResponse<String> data =_bookService.AddBook(book);
+         if(data.Success){
+          return  ResponseEntity.ok(data);
+         }
+         return ResponseEntity.badRequest().body(data);
      }
 
     @DeleteMapping(value = "/book/{Id}")
     public ResponseEntity<ServicesResponse<Optional<Book>>> deletBook(@PathVariable Integer Id){
-        return  ResponseEntity.ok(_bookService.delete(Id));
+        ServicesResponse<Optional<Book>> data =_bookService.delete(Id);
+        if(data.Success) {
+            return ResponseEntity.ok(data);
+        }
+        return ResponseEntity.badRequest().body(data);
     }
     @GetMapping(value = "/bookById/{Id}")
-    public ResponseEntity<ServicesResponse<Optional<Book>>> BookByid(@PathVariable Integer Id){
-        return  ResponseEntity.ok(_bookService.getbyid(Id));
+    public ResponseEntity<ServicesResponse<BookDto>> BookByid(@PathVariable Integer Id){
+        ServicesResponse<BookDto> data = _bookService.getbyid(Id);
+        if(data.Success) {
+            return ResponseEntity.ok(_bookService.getbyid(Id));
+        }
+        return ResponseEntity.notFound().build();
     }
-    @GetMapping("/GetAllBook")
+    @GetMapping("/AllBook")
     public ResponseEntity<ServicesResponse<List<Book>>> getAllBook(){
-        return ResponseEntity.ok(_bookService.getAllBook());
+        ServicesResponse<List<Book>> data = _bookService.getAllBook();
+        if(data.Success){
+         return ResponseEntity.ok(data);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping(path = "/book/{Id}")
+    public ResponseEntity<ServicesResponse<Book>> Updatebook(@PathVariable(value = "Id") Integer Id,@RequestBody Book book ){
+        return  ResponseEntity.ok(_bookService.update(Id,book));
     }
 
 

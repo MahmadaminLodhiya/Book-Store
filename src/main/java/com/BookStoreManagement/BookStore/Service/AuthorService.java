@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AuthorService {
+public class AuthorService implements IAuthoreService {
     private final AuthorRepository _author;
-    @Autowired
+
     public AuthorService(AuthorRepository author)
     {
         _author = author;
@@ -32,6 +32,7 @@ public class AuthorService {
         return response;
     }
 
+    @Override
     public ServicesResponse<List<Author>> GetAllAuthor()
     {
         ServicesResponse<List<Author>> response = new ServicesResponse<>();

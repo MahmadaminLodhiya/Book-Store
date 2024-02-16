@@ -1,11 +1,9 @@
 package com.BookStoreManagement.BookStore.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+
 public class Book {
 
     public int getId() {
@@ -21,14 +19,14 @@ public class Book {
     private int id;
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public void setTitle(String title) {
-        Title = title;
+        this.title = title;
     }
 
-    private String Title;
+    private String title;
 
     public int getAuthorId() {
         return AuthorId;
@@ -41,14 +39,14 @@ public class Book {
     private  int AuthorId;
 
     public String getIsbn() {
-        return Isbn;
+        return isbn;
     }
 
     public void setIsbn(String isbn) {
-        Isbn = isbn;
+        this.isbn = isbn;
     }
 
-    private String Isbn;
+    private String isbn;
 
     public int getPrice() {
         return price;

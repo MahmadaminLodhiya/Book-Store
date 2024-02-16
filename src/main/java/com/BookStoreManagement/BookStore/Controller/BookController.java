@@ -6,6 +6,7 @@ import com.BookStoreManagement.BookStore.Entity.Book;
 import com.BookStoreManagement.BookStore.Service.BookService;
 
 import com.BookStoreManagement.BookStore.Service.IBookService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +17,10 @@ import java.util.Optional;
 @RequestMapping("/api/v1")
 
 public class BookController {
+ @Autowired
+ IBookService _bookService;
 
-    private final IBookService _bookService;
 
-    public BookController(IBookService bookService){
-        _bookService = bookService;
-    }
 
 
      @PostMapping("/AddBook")
@@ -46,6 +45,14 @@ public class BookController {
         ServicesResponse<BookDto> data = _bookService.getbyid(Id);
         if(data.Success) {
             return ResponseEntity.ok(_bookService.getbyid(Id));
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @GetMapping(value = "/bookByTital/{Title}")
+    public ResponseEntity<ServicesResponse<BookDto>> BookBytital(@PathVariable String Title){
+        ServicesResponse<BookDto> data = _bookService.getbytital(Title);
+        if(data.Success) {
+            return ResponseEntity.ok(data);
         }
         return ResponseEntity.notFound().build();
     }

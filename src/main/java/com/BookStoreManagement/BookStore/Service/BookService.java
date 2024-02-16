@@ -33,8 +33,13 @@ public class BookService implements IBookService {
     public ServicesResponse<String> AddBook(Book book){
         ServicesResponse<String> response = new ServicesResponse<>();
         try {
+            List<Book> book3 = _book.findByIsbn(book.getIsbn());
+            if(book3.size()==0){
             Book newbook = _book.save(book);
-            response.Data= "Book add...";
+            response.Data= "Book add...";}
+            else {
+                throw new Exception("Invelid Isbn"+book3.get(0).getIsbn());
+            }
         }catch (Exception ex){
           response.Data=null;
           response.Success=false;
@@ -68,13 +73,17 @@ public class BookService implements IBookService {
             Book book1 = _book.findById(id).orElseThrow(
                     () -> new EntityNotFoundException(
                             String.valueOf(id)));
-
+           List<Book> book3 = _book.findByIsbn(book.getIsbn());
+            if(book3==null){
 
             book1.setPrice(book.getPrice());
             book1.setAuthorId(book.getAuthorId());
             book1.setTitle(book.getTitle());
             book1.setIsbn(book.getIsbn());
-            response.Data = _book.save(book1);
+            response.Data = _book.save(book1);}
+            else {
+                throw new Exception("Invelid Isbn");
+            }
 
 
         }catch (Exception ex){
@@ -103,6 +112,37 @@ public class BookService implements IBookService {
                 response.Data.setTitle(book.getTitle());
 
             }
+        catch (Exception ex){
+            response.Data = null;
+            response.Success=false;
+            response.Massage=ex.getMessage();
+        }
+        return  response;
+    }
+
+
+
+
+    public ServicesResponse<BookDto> getbytital(String tital) {
+        ServicesResponse<BookDto> response = new ServicesResponse<>();
+        try {
+            List<Book> book = _book.findByTitle(tital);
+            if(book!=null){
+
+            Author author = _Author.findById(book.get(0).getAuthorId()).orElseThrow(
+                    () -> new EntityNotFoundException("Invalid Author Id"+
+                            String.valueOf(book.get(0).getAuthorId())));
+
+            response.Data= new BookDto();
+            response.Data.setAuthor(author);
+            response.Data.setPrice(book.get(0).getPrice());
+            response.Data.setIsbn(book.get(0).getIsbn());
+            response.Data.setTitle(book.get(0).getTitle());}
+            else {
+                throw new Exception("Invalid Id");
+            }
+
+        }
         catch (Exception ex){
             response.Data = null;
             response.Success=false;

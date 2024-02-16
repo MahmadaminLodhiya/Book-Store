@@ -4,13 +4,6 @@ import com.BookStoreManagement.BookStore.Entity.Author;
 
 public class BookDto {
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return Title;
@@ -44,7 +37,7 @@ public class BookDto {
         this.author = author;
     }
 
-    private int id;
+
     private String Title;
     private String Isbn;
     private int price;

@@ -4,7 +4,7 @@ import com.BookStoreManagement.BookStore.Dto.BookDto;
 import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
 import com.BookStoreManagement.BookStore.Entity.Book;
 import com.BookStoreManagement.BookStore.Repository.BookRepository;
-import jakarta.persistence.EntityNotFoundException;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +29,6 @@ public class BookService implements IBookService {
     public ServicesResponse<String> AddBook(Book book){
         ServicesResponse<String> response = new ServicesResponse<>();
         try {
-
-
-
             Book newbook = _book.save(book);
             response.Data= "Book add...";
         }catch (Exception ex){
@@ -65,8 +62,7 @@ public class BookService implements IBookService {
         ServicesResponse<Book> response = new ServicesResponse<>();
         try {
             Book book1 = _book.findById(id).orElseThrow(
-                    ()
-                            -> new EntityNotFoundException(
+                    () -> new EntityNotFoundException(
                             String.valueOf(id)));
 
 

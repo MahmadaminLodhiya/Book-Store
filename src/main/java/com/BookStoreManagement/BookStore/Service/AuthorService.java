@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class AuthorService implements IAuthoreService {
     private final AuthorRepository _author;
-    @Autowired
+
     public AuthorService(AuthorRepository author)
     {
         _author = author;

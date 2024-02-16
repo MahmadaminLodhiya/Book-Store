@@ -9,3 +9,11 @@ server:
 spring-doc:
   swagger-ui:
     path: /swagger
+spring:
+
+  security:
+
+    user:
+      password: 6624
+
+

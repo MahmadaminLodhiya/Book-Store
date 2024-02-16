@@ -1,9 +1,8 @@
 package com.BookStoreManagement.BookStore.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.BookStoreManagement.BookStore.Dto.AuthorDto;
+
+import javax.persistence.*;
 
 @Entity
 public class Author {
@@ -12,11 +11,13 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  int id;
     private String name;
+    @Column(unique = true)
     private String email;
     public Author(){}
-    public Author(String name)
+    public Author(AuthorDto author)
     {
-        this.name = name;
+        name = author.getName();
+        email = author.getEmail();
     }
 
     public int getId() {

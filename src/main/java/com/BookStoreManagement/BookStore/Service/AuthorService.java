@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AuthorService implements IAuthoreService {
@@ -29,8 +28,7 @@ public class AuthorService implements IAuthoreService {
         ServicesResponse<String> response = new ServicesResponse<>();
         try {
             List<Author> authors = _author.findByEmail(authorDto.getEmail());
-            if(authors.size()!=0)
-            {
+            if (authors.size() != 0) {
                 throw new IllegalArgumentException("Email already available!!");
             }
             Author author1 = new Author(authorDto);
@@ -89,13 +87,12 @@ public class AuthorService implements IAuthoreService {
             List<Book> allAuthorBook = new ArrayList<>();
             List<Book> allBooks = _books.findAll();
             for (int i = 0; i < allBooks.size(); i++) {
-                if(allBooks.get(i).getAuthorId() == authorId)
+                if (allBooks.get(i).getAuthorId() == authorId)
                     allAuthorBook.add(allBooks.get(i));
             }
             response.Data = allAuthorBook;
             response.Success = true;
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
             response.Massage = "Invalid id " + ex.getMessage();
@@ -104,8 +101,7 @@ public class AuthorService implements IAuthoreService {
     }
 
     @Override
-    public ServicesResponse<AuthorDto> getAuthorById(Integer authorId)
-    {
+    public ServicesResponse<AuthorDto> getAuthorById(Integer authorId) {
         ServicesResponse<AuthorDto> response = new ServicesResponse<>();
         try {
             Author author = _author.findById(authorId).orElseThrow(() -> new EntityNotFoundException(
@@ -116,8 +112,7 @@ public class AuthorService implements IAuthoreService {
             authorDto.setEmail(author.getEmail());
             response.Data = authorDto;
             response.Success = true;
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
             response.Massage = "Invalid id " + ex.getMessage();

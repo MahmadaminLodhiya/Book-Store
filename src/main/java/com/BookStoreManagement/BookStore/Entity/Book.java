@@ -45,7 +45,7 @@ public class Book {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
-
+    @Column(unique = true)
     private String isbn;
 
     public int getPrice() {

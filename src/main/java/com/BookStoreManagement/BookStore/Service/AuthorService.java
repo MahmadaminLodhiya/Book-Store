@@ -31,7 +31,7 @@ public class AuthorService implements IAuthoreService {
         ServicesResponse<String> response = new ServicesResponse<>();
         try {
             List<Author> authors = _author.findByEmail(authorDto.getEmail());
-            if (authors.size() != 0) {
+            if (!authors.isEmpty()) {
                 throw new IllegalArgumentException("Email already available!!");
             }
             Author author1 = new Author(authorDto);
@@ -65,7 +65,7 @@ public class AuthorService implements IAuthoreService {
         ServicesResponse<Author> response = new ServicesResponse<>();
         try {
             Author author1 = _author.findById(id).orElseThrow(
-                    () -> new EntityNotFoundException(
+                    () -> new EntityNotFoundException("Invalid id " +
                             String.valueOf(id)));
 
             author1.setEmail(author.getEmail());
@@ -75,7 +75,7 @@ public class AuthorService implements IAuthoreService {
         } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
-            response.Message = "Invalid id " + ex.getMessage();
+            response.Message = ex.getMessage();
         }
         return response;
     }
@@ -85,20 +85,20 @@ public class AuthorService implements IAuthoreService {
         ServicesResponse<List<Book>> response = new ServicesResponse<>();
         try {
             Author author = _author.findById(authorId).orElseThrow(() -> new EntityNotFoundException(
-                    String.valueOf(authorId)));
+                    "Invalid id: " +  String.valueOf(authorId)));
 
             List<Book> allAuthorBook = new ArrayList<>();
             List<Book> allBooks = _books.findAll();
-            for (int i = 0; i < allBooks.size(); i++) {
-                if (allBooks.get(i).getAuthorId() == authorId)
-                    allAuthorBook.add(allBooks.get(i));
+            for (Book book:allBooks) {
+                if (book.getAuthorId() == authorId)
+                    allAuthorBook.add(book);
             }
             response.Data = allAuthorBook;
             response.Success = true;
         } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
-            response.Message = "Invalid id " + ex.getMessage();
+            response.Message = ex.getMessage();
         }
         return response;
     }
@@ -108,7 +108,7 @@ public class AuthorService implements IAuthoreService {
         ServicesResponse<AuthorDto> response = new ServicesResponse<>();
         try {
             Author author = _author.findById(authorId).orElseThrow(() -> new EntityNotFoundException(
-                    String.valueOf(authorId)));
+                    "Invalid id " +  String.valueOf(authorId)));
 
             AuthorDto authorDto = new AuthorDto();
             authorDto.setName(author.getName());
@@ -118,7 +118,7 @@ public class AuthorService implements IAuthoreService {
         } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
-            response.Message = "Invalid id " + ex.getMessage();
+            response.Message =ex.getMessage();
         }
         return response;
     }
@@ -129,7 +129,7 @@ public class AuthorService implements IAuthoreService {
         try {
             Author existingAuthor = _author.findById(authorId).orElseThrow(
                     () -> new EntityNotFoundException(
-                            String.valueOf(authorId)));
+                            "Invalid id " +  String.valueOf(authorId)));
 
             fields.forEach((key, value)->{
                 Field field = ReflectionUtils.findField(Author.class, key);
@@ -142,7 +142,7 @@ public class AuthorService implements IAuthoreService {
         }catch (Exception ex){
             response.Data = null;
             response.Success = false;
-            response.Message = "Invalid id " + ex.getMessage();
+            response.Message = ex.getMessage();
         }
         return response;
     }

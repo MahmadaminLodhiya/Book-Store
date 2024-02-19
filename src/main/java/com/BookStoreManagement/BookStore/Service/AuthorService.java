@@ -38,7 +38,7 @@ public class AuthorService implements IAuthoreService {
         } catch (Exception e) {
             response.Data = null;
             response.Success = false;
-            response.Massage = e.getMessage();
+            response.Message = e.getMessage();
         }
         return response;
     }
@@ -52,7 +52,7 @@ public class AuthorService implements IAuthoreService {
         } catch (Exception e) {
             response.Data = null;
             response.Success = false;
-            response.Massage = e.getMessage();
+            response.Message = e.getMessage();
         }
         return response;
     }
@@ -72,7 +72,7 @@ public class AuthorService implements IAuthoreService {
         } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
-            response.Massage = "Invalid id " + ex.getMessage();
+            response.Message = "Invalid id " + ex.getMessage();
         }
         return response;
     }
@@ -95,7 +95,7 @@ public class AuthorService implements IAuthoreService {
         } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
-            response.Massage = "Invalid id " + ex.getMessage();
+            response.Message = "Invalid id " + ex.getMessage();
         }
         return response;
     }
@@ -115,7 +115,7 @@ public class AuthorService implements IAuthoreService {
         } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
-            response.Massage = "Invalid id " + ex.getMessage();
+            response.Message = "Invalid id " + ex.getMessage();
         }
         return response;
     }

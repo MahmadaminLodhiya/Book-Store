@@ -43,13 +43,22 @@ public class BookService implements IBookService {
             Author author = _Author.findById(obj.getAuthorId()).orElseThrow(
                     () -> new EntityNotFoundException("Invalid Author Id: " +
                             String.valueOf(obj.getAuthorId())));
-            Book newbook = _Book.save(obj);
-            response.Data = "Book add...";
+            Optional<Book> IsBnBook= Optional.ofNullable(_Book.findByIsbn(obj.getIsbn()));
+            if(!IsBnBook.isPresent()){
+           try {
+               Book newbook = _Book.save(obj);
+           }catch (Exception ex){
+               throw new Exception("We apologize, but we encountered an error while attempting to add the book to our database. This could be due to technical issues or invalid data provided.");
+           }
+
+            response.Data = "We are pleased to inform you that the book data has been successfully added to our database.";}else {
+             throw new Exception("We regret to inform you that the ISBN you provided already exists in our database. Each ISBN must be unique to ensure accurate cataloging and inventory management.");
+            }
 
         } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
-            response.Massage = ex.getMessage();
+            response.Message = ex.getMessage();
         }
         return response;
     }
@@ -63,32 +72,33 @@ public class BookService implements IBookService {
                 response.Data = book;
 
             } else {
-                throw new Exception("Invelid Book Id");
+                throw new Exception("We're sorry, but the book with the provided ID does not exist in our database or the ID is invalid. As a result, we are unable to process the deletion request.");
             }
         } catch (Exception ex) {
 
             response.Data = null;
             response.Success = false;
-            response.Massage = ex.getMessage();
+            response.Message = ex.getMessage();
         }
         return response;
     }
 
-    public ServicesResponse<Book> update(Integer id, Book book) {
+    public ServicesResponse<Book> update(Integer id, AddBookDto book) {
         ServicesResponse<Book> response = new ServicesResponse<>();
         try {
             Book book1 = _Book.findById(id).orElseThrow(
                     () -> new EntityNotFoundException(
-                            "Invalid id: " + String.valueOf(id)));
-            Author author = _Author.findById(book.getAuthorId()).orElseThrow(
-                    () -> new EntityNotFoundException("Invalid Author Id: " +
-                            String.valueOf(id)));
+                            "We're sorry, but the book with the provided ID does not exist in our database or the ID is invalid."));
+            if(book.getAuthorid()!=0) {
+                Author author = _Author.findById(book.getAuthorid()).orElseThrow(
+                        () -> new EntityNotFoundException("We regret to inform you that the update process for the book could not be completed due to an invalid author ID. The author ID provided does not correspond to a valid author in our database."));
+            }
 
-            List<Book> book3 = _Book.findByIsbn(book.getIsbn());
+
 
 
             book1.setPrice(book.getPrice());
-            book1.setAuthorId(book.getAuthorId());
+            book1.setAuthorId(book.getAuthorid());
             book1.setTitle(book.getTitle());
             book1.setIsbn(book.getIsbn());
             response.Data = _Book.save(book1);
@@ -97,7 +107,7 @@ public class BookService implements IBookService {
         } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
-            response.Massage = ex.getMessage();
+            response.Message = ex.getMessage();
         }
         return response;
     }
@@ -106,8 +116,7 @@ public class BookService implements IBookService {
         ServicesResponse<BookDto> response = new ServicesResponse<>();
         try {
             Book book = _Book.findById(id).orElseThrow(
-                    () -> new EntityNotFoundException("Invalid Id: " +
-                            String.valueOf(id)));
+                    () -> new EntityNotFoundException("We're sorry, but the book with the provided ID does not exist in our database or the ID is invalid."));
 
             Author author = _Author.findById(book.getAuthorId()).orElseThrow(
                     () -> new EntityNotFoundException("Invalid Author Id: " +
@@ -122,17 +131,21 @@ public class BookService implements IBookService {
         } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
-            response.Massage = ex.getMessage();
+            response.Message = ex.getMessage();
         }
         return response;
     }
 
 
-    public ServicesResponse<BookDto> getbytital(String tital) {
+    public ServicesResponse<BookDto> getbytital(String titale) {
         ServicesResponse<BookDto> response = new ServicesResponse<>();
         try {
-            List<Book> book = _Book.findByTitle(tital);
-            if (book != null) {
+            List<Book> book;
+
+                book = _Book.findByTitleIgnoreCase(titale);
+
+
+
 
                 Author author = _Author.findById(book.get(0).getAuthorId()).orElseThrow(
                         () -> new EntityNotFoundException("Invalid Author Id: " +
@@ -143,15 +156,14 @@ public class BookService implements IBookService {
                 response.Data.setPrice(book.get(0).getPrice());
                 response.Data.setIsbn(book.get(0).getIsbn());
                 response.Data.setTitle(book.get(0).getTitle());
-            } else {
-                throw new Exception("Invalid Id");
-            }
 
-        } catch (Exception ex) {
+
+        }catch (Exception e){
             response.Data = null;
             response.Success = false;
-            response.Massage = ex.getMessage();
+            response.Message = "We're sorry, but the book you're searching for could not be found in our database. It's possible that the title or details provided may be incorrect, or the book may not be available in our inventory.";
         }
+
         return response;
     }
 }

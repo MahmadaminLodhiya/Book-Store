@@ -19,7 +19,7 @@ public class AuthorController {
     public AuthorController(IAuthoreService _authors) {
         this._authors = _authors;
     }
-// add  new author
+
     @PostMapping("/Author")
     public ResponseEntity<ServicesResponse<String>> AddAuthor(@RequestBody AuthorDto author) {
         ServicesResponse<String> data = _authors.AddAuthor(author);
@@ -27,7 +27,7 @@ public class AuthorController {
             return ResponseEntity.ok(data);
         return ResponseEntity.badRequest().body(data);
     }
-// get all author details
+
     @GetMapping("/GetAllAuthor")
     public ResponseEntity<ServicesResponse<List<Author>>> GetAllAuthor() {
         ServicesResponse<List<Author>> data = _authors.GetAllAuthor();
@@ -35,7 +35,7 @@ public class AuthorController {
             return ResponseEntity.ok(data);
         return ResponseEntity.notFound().build();
     }
-// get all books of author
+
     @GetMapping("/GetAllBooksOfAuthor/{authorId}")
     public ResponseEntity<ServicesResponse<List<Book>>> GetAllBooksOfAuthor(@PathVariable Integer authorId) {
         ServicesResponse<List<Book>> data = _authors.GetAllBookOfAuthor(authorId);

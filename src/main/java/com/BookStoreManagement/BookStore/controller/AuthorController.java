@@ -20,6 +20,7 @@ public class AuthorController {
         this._authors = _authors;
     }
 
+    // add a new author
     @PostMapping("/Author")
     public ResponseEntity<ServicesResponse<String>> AddAuthor(@RequestBody AuthorDto author) {
         ServicesResponse<String> data = _authors.AddAuthor(author);
@@ -28,6 +29,7 @@ public class AuthorController {
         return ResponseEntity.badRequest().body(data);
     }
 
+    // get all the authors
     @GetMapping("/GetAllAuthor")
     public ResponseEntity<ServicesResponse<List<Author>>> GetAllAuthor() {
         ServicesResponse<List<Author>> data = _authors.GetAllAuthor();
@@ -36,6 +38,7 @@ public class AuthorController {
         return ResponseEntity.notFound().build();
     }
 
+    // get all the books of the author
     @GetMapping("/GetAllBooksOfAuthor/{authorId}")
     public ResponseEntity<ServicesResponse<List<Book>>> GetAllBooksOfAuthor(@PathVariable Integer authorId) {
         ServicesResponse<List<Book>> data = _authors.GetAllBookOfAuthor(authorId);
@@ -44,6 +47,7 @@ public class AuthorController {
         return ResponseEntity.notFound().build();
     }
 
+    // update the whole author details
     @PutMapping("/UpdateAuthor/{id}")
     public ResponseEntity<ServicesResponse<Author>> UpdateAuthor(@PathVariable Integer id, @RequestBody AuthorDto authorDto) {
         ServicesResponse<Author> data = _authors.UpdateAuthor(id, authorDto);
@@ -52,6 +56,7 @@ public class AuthorController {
         return ResponseEntity.badRequest().body(data);
     }
 
+    // update only specific details
     @PatchMapping("/UpdateAuthor/{id}")
     public ResponseEntity<ServicesResponse<Author>> UpdateAuthor(@PathVariable Integer id, @RequestBody Map<String, Object> fields) {
         ServicesResponse<Author> data = _authors.UpdateSpecificField(id, fields);
@@ -59,8 +64,7 @@ public class AuthorController {
             return ResponseEntity.ok(data);
         return ResponseEntity.badRequest().body(data);
     }
-
-
+    // get author details by using author details
     @GetMapping("/GetAuthorById/{authorId}")
     public ResponseEntity<ServicesResponse<AuthorDto>>GetAuthorById(@PathVariable Integer authorId) {
         ServicesResponse<AuthorDto> data = _authors.GetAuthorById(authorId);

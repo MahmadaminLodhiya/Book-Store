@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -20,7 +21,7 @@ public class BookController {
     @Autowired
     IBookService _bookService;
 
-
+//Add new book
     @PostMapping("/AddBook")
     public ResponseEntity<ServicesResponse<String>> AddNewBook(@RequestBody AddBookDto book) {
         ServicesResponse<String> data = _bookService.AddBook(book);
@@ -29,46 +30,50 @@ public class BookController {
         }
         return ResponseEntity.badRequest().body(data);
     }
-
+//Delete book
     @DeleteMapping(value = "/Book/{Id}")
-    public ResponseEntity<ServicesResponse<Optional<Book>>> deletBook(@PathVariable Integer Id) {
-        ServicesResponse<Optional<Book>> data = _bookService.delete(Id);
+    public ResponseEntity<ServicesResponse<Optional<Book>>> DeletBook(@PathVariable Integer Id) {
+        ServicesResponse<Optional<Book>> data = _bookService.Delete(Id);
         if (data.Success) {
             return ResponseEntity.ok(data);
         }
         return ResponseEntity.badRequest().body(data);
     }
-
+//Get book using book id
     @GetMapping(value = "/BookById/{Id}")
-    public ResponseEntity<ServicesResponse<BookDto>> BookByid(@PathVariable Integer Id) {
-        ServicesResponse<BookDto> data = _bookService.getbyid(Id);
+    public ResponseEntity<ServicesResponse<BookDto>> BookById(@PathVariable Integer Id) {
+        ServicesResponse<BookDto> data = _bookService.GetById(Id);
         if (data.Success) {
-            return ResponseEntity.ok(_bookService.getbyid(Id));
+            return ResponseEntity.ok(_bookService.GetById(Id));
         }
         return ResponseEntity.notFound().build();
     }
-
+//Get book using book titale
     @GetMapping(value = "/BookByTitale/{Title}")
-    public ResponseEntity<ServicesResponse<BookDto>> BookBytital(@PathVariable String Title) {
-        ServicesResponse<BookDto> data = _bookService.getbytital(Title);
-//        if(data.Success) {
-        return ResponseEntity.ok(data);
-//        }
-//        return ResponseEntity.notFound().build();
-    }
+    public ResponseEntity<ServicesResponse<BookDto>> BookByTital(@PathVariable String Title) {
+        ServicesResponse<BookDto> data = _bookService.GetByTital(Title);
 
+        return ResponseEntity.ok(data);
+
+    }
+//Get all book
     @GetMapping("/AllBook")
-    public ResponseEntity<ServicesResponse<List<Book>>> getAllBook() {
-        ServicesResponse<List<Book>> data = _bookService.getAllBook();
+    public ResponseEntity<ServicesResponse<List<Book>>> GetAllBook() {
+        ServicesResponse<List<Book>> data = _bookService.GetAllBook();
         if (data.Success) {
             return ResponseEntity.ok(data);
         }
         return ResponseEntity.notFound().build();
     }
-
+//update book
     @PutMapping(path = "/Book/{Id}")
     public ResponseEntity<ServicesResponse<Book>> Updatebook(@PathVariable(value = "Id") Integer Id, @RequestBody AddBookDto book) {
-        return ResponseEntity.ok(_bookService.update(Id, book));
+        return ResponseEntity.ok(_bookService.Update(Id, book));
+    }
+
+    @PatchMapping("/{id}")
+    public  ResponseEntity<ServicesResponse<Book>> updateProductFields(@PathVariable int id,@RequestBody Map<String, Object> fields){
+        return ResponseEntity.ok(_bookService .updateProductByFields(id,fields));
     }
 
 

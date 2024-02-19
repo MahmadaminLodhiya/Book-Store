@@ -11,8 +11,11 @@ import com.BookStoreManagement.BookStore.Repository.BookRepository;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -26,7 +29,7 @@ public class BookService implements IBookService {
         _Author = authorRepository;
     }
 
-    public ServicesResponse<List<Book>> getAllBook() {
+    public ServicesResponse<List<Book>> GetAllBook() {
         ServicesResponse<List<Book>> response = new ServicesResponse<List<Book>>();
         response.Data = _Book.findAll();
         return response;
@@ -63,7 +66,7 @@ public class BookService implements IBookService {
         return response;
     }
 
-    public ServicesResponse<Optional<Book>> delete(Integer id) {
+    public ServicesResponse<Optional<Book>> Delete(Integer id) {
         ServicesResponse<Optional<Book>> response = new ServicesResponse<>();
         try {
             Optional<Book> book = _Book.findById(id);
@@ -83,7 +86,7 @@ public class BookService implements IBookService {
         return response;
     }
 
-    public ServicesResponse<Book> update(Integer id, AddBookDto book) {
+    public ServicesResponse<Book> Update(Integer id, AddBookDto book) {
         ServicesResponse<Book> response = new ServicesResponse<>();
         try {
             Book book1 = _Book.findById(id).orElseThrow(
@@ -116,7 +119,7 @@ public class BookService implements IBookService {
         return response;
     }
 
-    public ServicesResponse<BookDto> getbyid(Integer id) {
+    public ServicesResponse<BookDto> GetById(Integer id) {
         ServicesResponse<BookDto> response = new ServicesResponse<>();
         try {
             Book book = _Book.findById(id).orElseThrow(
@@ -141,7 +144,7 @@ public class BookService implements IBookService {
     }
 
 
-    public ServicesResponse<BookDto> getbytital(String titale) {
+    public ServicesResponse<BookDto> GetByTital(String titale) {
         ServicesResponse<BookDto> response = new ServicesResponse<>();
         try {
             List<Book> book;
@@ -169,5 +172,28 @@ public class BookService implements IBookService {
         }
 
         return response;
+    }
+
+    public ServicesResponse<Book> updateProductByFields(int id, Map<String, Object> fields) {
+        ServicesResponse<Book> response = new ServicesResponse<>();
+        try {
+
+        Optional<Book> existingProduct = _Book.findById(id);
+
+        if (existingProduct.isPresent()) {
+            fields.forEach((key, value) -> {
+                Field field = ReflectionUtils.findField(Book.class, key);
+                field.setAccessible(true);
+                ReflectionUtils.setField(field, existingProduct.get(), value);
+            });
+            response.Data=_Book.save(existingProduct.get());
+        }}catch (Exception ex){
+            response.Data = null;
+            response.Success = false;
+            response.Message = ex.getMessage();
+
+        }
+        return  response;
+
     }
 }

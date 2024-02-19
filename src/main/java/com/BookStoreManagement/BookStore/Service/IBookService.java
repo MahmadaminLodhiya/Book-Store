@@ -6,14 +6,16 @@ import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
 import com.BookStoreManagement.BookStore.Entity.Book;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface IBookService {
 
-    ServicesResponse<List<Book>> getAllBook();
+    ServicesResponse<List<Book>> GetAllBook();
     ServicesResponse<String> AddBook(AddBookDto book);
-    ServicesResponse<Optional<Book>> delete(Integer id);
-    ServicesResponse<BookDto> getbyid(Integer id);
-    ServicesResponse<BookDto> getbytital(String tital);
-     ServicesResponse<Book> update(Integer id, AddBookDto book);
+    ServicesResponse<Optional<Book>> Delete(Integer id);
+    ServicesResponse<BookDto> GetById(Integer id);
+    ServicesResponse<BookDto> GetByTital(String tital);
+     ServicesResponse<Book> Update(Integer id, AddBookDto book);
+    ServicesResponse<Book> updateProductByFields(int id, Map<String, Object> fields);
 }

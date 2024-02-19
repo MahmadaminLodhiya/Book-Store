@@ -96,11 +96,15 @@ public class BookService implements IBookService {
 
 
 
-
-            book1.setPrice(book.getPrice());
+        if(book.getPrice()!=0) book1.setPrice(book.getPrice());
+        if(book.getAuthorid()!=0){
             book1.setAuthorId(book.getAuthorid());
-            book1.setTitle(book.getTitle());
-            book1.setIsbn(book.getIsbn());
+        }
+            if(book.getTitle()!=null) book1.setTitle(book.getTitle());
+            if(book.getIsbn()!=null){
+                book1.setIsbn(book.getIsbn());
+            }
+
             response.Data = _Book.save(book1);
 
 

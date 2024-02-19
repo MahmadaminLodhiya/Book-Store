@@ -26,7 +26,7 @@ public class BookService implements IBookService {
         _Author = authorRepository;
     }
 
-    public ServicesResponse<List<Book>> getAllBook() {
+    public ServicesResponse<List<Book>> GetAllBook() {
         ServicesResponse<List<Book>> response = new ServicesResponse<List<Book>>();
         response.Data = _Book.findAll();
         return response;
@@ -63,7 +63,7 @@ public class BookService implements IBookService {
         return response;
     }
 
-    public ServicesResponse<Optional<Book>> delete(Integer id) {
+    public ServicesResponse<Optional<Book>> Delete(Integer id) {
         ServicesResponse<Optional<Book>> response = new ServicesResponse<>();
         try {
             Optional<Book> book = _Book.findById(id);
@@ -83,7 +83,7 @@ public class BookService implements IBookService {
         return response;
     }
 
-    public ServicesResponse<Book> update(Integer id, AddBookDto book) {
+    public ServicesResponse<Book> Update(Integer id, AddBookDto book) {
         ServicesResponse<Book> response = new ServicesResponse<>();
         try {
             Book book1 = _Book.findById(id).orElseThrow(
@@ -96,11 +96,15 @@ public class BookService implements IBookService {
 
 
 
-
-            book1.setPrice(book.getPrice());
+        if(book.getPrice()!=0) book1.setPrice(book.getPrice());
+        if(book.getAuthorid()!=0){
             book1.setAuthorId(book.getAuthorid());
-            book1.setTitle(book.getTitle());
-            book1.setIsbn(book.getIsbn());
+        }
+            if(book.getTitle()!=null) book1.setTitle(book.getTitle());
+            if(book.getIsbn()!=null){
+                book1.setIsbn(book.getIsbn());
+            }
+
             response.Data = _Book.save(book1);
 
 
@@ -112,7 +116,7 @@ public class BookService implements IBookService {
         return response;
     }
 
-    public ServicesResponse<BookDto> getbyid(Integer id) {
+    public ServicesResponse<BookDto> GetById(Integer id) {
         ServicesResponse<BookDto> response = new ServicesResponse<>();
         try {
             Book book = _Book.findById(id).orElseThrow(
@@ -137,15 +141,12 @@ public class BookService implements IBookService {
     }
 
 
-    public ServicesResponse<BookDto> getbytital(String titale) {
+    public ServicesResponse<BookDto> GetByTitle(String title) {
         ServicesResponse<BookDto> response = new ServicesResponse<>();
         try {
             List<Book> book;
 
-                book = _Book.findByTitleIgnoreCase(titale);
-
-
-
+                book = _Book.findByTitleIgnoreCase(title);
 
                 Author author = _Author.findById(book.get(0).getAuthorId()).orElseThrow(
                         () -> new EntityNotFoundException("Invalid Author Id: " +
@@ -156,8 +157,6 @@ public class BookService implements IBookService {
                 response.Data.setPrice(book.get(0).getPrice());
                 response.Data.setIsbn(book.get(0).getIsbn());
                 response.Data.setTitle(book.get(0).getTitle());
-
-
         }catch (Exception e){
             response.Data = null;
             response.Success = false;

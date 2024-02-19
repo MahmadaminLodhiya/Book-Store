@@ -20,8 +20,8 @@ public class DataInitializar implements CommandLineRunner {
         Author a1 = new Author();
         a1.setName("Niraj");
         a1.setEmail("niraj.ghetiya@mybook.com");
-
         _Author.save(a1);
+
         Book b1 = new Book();
         b1.setTitle("xyz");
         b1.setAuthorId(1);

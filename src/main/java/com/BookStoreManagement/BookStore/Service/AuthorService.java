@@ -8,10 +8,13 @@ import com.BookStoreManagement.BookStore.Repository.AuthorRepository;
 import com.BookStoreManagement.BookStore.Repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
 import javax.persistence.EntityNotFoundException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AuthorService implements IAuthoreService {
@@ -58,7 +61,7 @@ public class AuthorService implements IAuthoreService {
     }
 
     @Override
-    public ServicesResponse<Author> updateAuthor(Integer id, AuthorDto author) {
+    public ServicesResponse<Author> UpdateAuthor(Integer id, AuthorDto author) {
         ServicesResponse<Author> response = new ServicesResponse<>();
         try {
             Author author1 = _author.findById(id).orElseThrow(
@@ -78,7 +81,7 @@ public class AuthorService implements IAuthoreService {
     }
 
     @Override
-    public ServicesResponse<List<Book>> getAllBookOfAuthor(Integer authorId) {
+    public ServicesResponse<List<Book>> GetAllBookOfAuthor(Integer authorId) {
         ServicesResponse<List<Book>> response = new ServicesResponse<>();
         try {
             Author author = _author.findById(authorId).orElseThrow(() -> new EntityNotFoundException(
@@ -101,7 +104,7 @@ public class AuthorService implements IAuthoreService {
     }
 
     @Override
-    public ServicesResponse<AuthorDto> getAuthorById(Integer authorId) {
+    public ServicesResponse<AuthorDto> GetAuthorById(Integer authorId) {
         ServicesResponse<AuthorDto> response = new ServicesResponse<>();
         try {
             Author author = _author.findById(authorId).orElseThrow(() -> new EntityNotFoundException(
@@ -113,6 +116,30 @@ public class AuthorService implements IAuthoreService {
             response.Data = authorDto;
             response.Success = true;
         } catch (Exception ex) {
+            response.Data = null;
+            response.Success = false;
+            response.Message = "Invalid id " + ex.getMessage();
+        }
+        return response;
+    }
+
+    @Override
+    public ServicesResponse<Author> UpdateSpecificField(Integer authorId, Map<String, Object> fields) {
+        ServicesResponse<Author> response = new ServicesResponse<>();
+        try {
+            Author existingAuthor = _author.findById(authorId).orElseThrow(
+                    () -> new EntityNotFoundException(
+                            String.valueOf(authorId)));
+
+            fields.forEach((key, value)->{
+                Field field = ReflectionUtils.findField(Author.class, key);
+                field.setAccessible(true);
+                ReflectionUtils.setField(field, existingAuthor, value);
+            });
+            _author.save(existingAuthor);
+            response.Data = existingAuthor;
+            response.Success = true;
+        }catch (Exception ex){
             response.Data = null;
             response.Success = false;
             response.Message = "Invalid id " + ex.getMessage();

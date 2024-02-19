@@ -10,10 +10,10 @@ import java.util.Optional;
 
 public interface IBookService {
 
-    ServicesResponse<List<Book>> getAllBook();
+    ServicesResponse<List<Book>> GetAllBook();
     ServicesResponse<String> AddBook(AddBookDto book);
-    ServicesResponse<Optional<Book>> delete(Integer id);
-    ServicesResponse<BookDto> getbyid(Integer id);
-    ServicesResponse<BookDto> getbytital(String tital);
-     ServicesResponse<Book> update(Integer id, AddBookDto book);
+    ServicesResponse<Optional<Book>> Delete(Integer id);
+    ServicesResponse<BookDto>GetById(Integer id);
+    ServicesResponse<BookDto> GetByTitle(String title);
+     ServicesResponse<Book> Update(Integer id, AddBookDto book);
 }

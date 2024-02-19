@@ -6,6 +6,7 @@ import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
 import com.BookStoreManagement.BookStore.Entity.Book;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface IBookService {
@@ -16,4 +17,5 @@ public interface IBookService {
     ServicesResponse<BookDto>GetById(Integer id);
     ServicesResponse<BookDto> GetByTitle(String title);
      ServicesResponse<Book> Update(Integer id, AddBookDto book);
+    ServicesResponse<Book> updateProductByFields(int id, Map<String, Object> fields);
 }

@@ -11,8 +11,11 @@ import com.BookStoreManagement.BookStore.Repository.BookRepository;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -164,5 +167,27 @@ public class BookService implements IBookService {
         }
 
         return response;
+    }
+    public ServicesResponse<Book> updateProductByFields(int id, Map<String, Object> fields) {
+        ServicesResponse<Book> response = new ServicesResponse<>();
+        try {
+
+            Optional<Book> existingProduct = _Book.findById(id);
+
+            if (existingProduct.isPresent()) {
+                fields.forEach((key, value) -> {
+                    Field field = ReflectionUtils.findField(Book.class, key);
+                    field.setAccessible(true);
+                    ReflectionUtils.setField(field, existingProduct.get(), value);
+                });
+                response.Data=_Book.save(existingProduct.get());
+            }}catch (Exception ex){
+            response.Data = null;
+            response.Success = false;
+            response.Message = ex.getMessage();
+
+        }
+        return  response;
+
     }
 }

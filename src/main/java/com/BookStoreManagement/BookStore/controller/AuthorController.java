@@ -9,9 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/authors")
+@RequestMapping("/Authors")
 public class AuthorController {
     private final IAuthoreService _authors;
 
@@ -19,8 +20,8 @@ public class AuthorController {
         this._authors = _authors;
     }
 
-    @PostMapping("/author")
-    public ResponseEntity<ServicesResponse<String>> addAuthor(@RequestBody AuthorDto author) {
+    @PostMapping("/Author")
+    public ResponseEntity<ServicesResponse<String>> AddAuthor(@RequestBody AuthorDto author) {
         ServicesResponse<String> data = _authors.AddAuthor(author);
         if (data.Success)
             return ResponseEntity.ok(data);
@@ -28,32 +29,41 @@ public class AuthorController {
     }
 
     @GetMapping("/GetAllAuthor")
-    public ResponseEntity<ServicesResponse<List<Author>>> getAllAuthor() {
+    public ResponseEntity<ServicesResponse<List<Author>>> GetAllAuthor() {
         ServicesResponse<List<Author>> data = _authors.GetAllAuthor();
         if (data.Success)
             return ResponseEntity.ok(data);
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/getAllBooksOfAuthor/{authorId}")
-    public ResponseEntity<ServicesResponse<List<Book>>> getAllBooksOfAuthor(@PathVariable Integer authorId) {
-        ServicesResponse<List<Book>> data = _authors.getAllBookOfAuthor(authorId);
+    @GetMapping("/GetAllBooksOfAuthor/{authorId}")
+    public ResponseEntity<ServicesResponse<List<Book>>> GetAllBooksOfAuthor(@PathVariable Integer authorId) {
+        ServicesResponse<List<Book>> data = _authors.GetAllBookOfAuthor(authorId);
         if (data.Success)
             return ResponseEntity.ok(data);
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/updateAuthor/{id}")
-    public ResponseEntity<ServicesResponse<Author>> updateAuthor(@PathVariable Integer id, @RequestBody AuthorDto authorDto) {
-        ServicesResponse<Author> data = _authors.updateAuthor(id, authorDto);
+    @PutMapping("/UpdateAuthor/{id}")
+    public ResponseEntity<ServicesResponse<Author>> UpdateAuthor(@PathVariable Integer id, @RequestBody AuthorDto authorDto) {
+        ServicesResponse<Author> data = _authors.UpdateAuthor(id, authorDto);
         if (data.Success)
             return ResponseEntity.ok(data);
         return ResponseEntity.badRequest().body(data);
     }
 
-    @GetMapping("/getAuthorById/{authorId}")
-    public ResponseEntity<ServicesResponse<AuthorDto>> getAuthorById(@PathVariable Integer authorId) {
-        ServicesResponse<AuthorDto> data = _authors.getAuthorById(authorId);
+    @PatchMapping("/UpdateAuthor/{id}")
+    public ResponseEntity<ServicesResponse<Author>> UpdateAuthor(@PathVariable Integer id, @RequestBody Map<String, Object> fields) {
+        ServicesResponse<Author> data = _authors.UpdateSpecificField(id, fields);
+        if (data.Success)
+            return ResponseEntity.ok(data);
+        return ResponseEntity.badRequest().body(data);
+    }
+
+
+    @GetMapping("/GetAuthorById/{authorId}")
+    public ResponseEntity<ServicesResponse<AuthorDto>>GetAuthorById(@PathVariable Integer authorId) {
+        ServicesResponse<AuthorDto> data = _authors.GetAuthorById(authorId);
         if (data.Success)
             return ResponseEntity.ok((data));
         return ResponseEntity.notFound().build();

@@ -6,15 +6,18 @@ import com.BookStoreManagement.BookStore.Entity.Author;
 import com.BookStoreManagement.BookStore.Entity.Book;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IAuthoreService {
     ServicesResponse<String> AddAuthor(AuthorDto author);
 
     ServicesResponse<List<Author>> GetAllAuthor();
 
-    ServicesResponse<Author> updateAuthor(Integer id, AuthorDto author);
+    ServicesResponse<Author> UpdateAuthor(Integer id, AuthorDto author);
 
-    ServicesResponse<List<Book>> getAllBookOfAuthor(Integer authorId);
+    ServicesResponse<List<Book>> GetAllBookOfAuthor(Integer authorId);
 
-    ServicesResponse<AuthorDto> getAuthorById(Integer authorId);
+    ServicesResponse<AuthorDto> GetAuthorById(Integer authorId);
+
+    ServicesResponse<Author> UpdateSpecificField(Integer authorId, Map<String, Object> fields);
 }

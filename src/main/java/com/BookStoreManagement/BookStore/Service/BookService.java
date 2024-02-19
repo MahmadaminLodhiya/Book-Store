@@ -10,6 +10,9 @@ import com.BookStoreManagement.BookStore.Repository.BookRepository;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -29,9 +32,12 @@ public class BookService implements IBookService {
         _Author = authorRepository;
     }
 
-    public ServicesResponse<List<Book>> GetAllBook() {
+    public ServicesResponse<List<Book>> GetAllBook(Integer pageNumber, Integer pageSize) {
         ServicesResponse<List<Book>> response = new ServicesResponse<List<Book>>();
-        response.Data = _Book.findAll();
+        // pagination
+        Pageable p = PageRequest.of(pageNumber,pageSize);
+        Page<Book> pageBooks = _Book.findAll(p);
+        response.Data = pageBooks.getContent();
         return response;
     }
 

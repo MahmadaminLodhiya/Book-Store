@@ -64,8 +64,11 @@ public class BookController {
 
     // get all books
     @GetMapping("/AllBook")
-    public ResponseEntity<ServicesResponse<List<Book>>> GetAllBook() {
-        ServicesResponse<List<Book>> data = _bookService.GetAllBook();
+    public ResponseEntity<ServicesResponse<List<Book>>> GetAllBook(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber ,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
+
+        ServicesResponse<List<Book>> data = _bookService.GetAllBook(pageNumber, pageSize);
         if (data.Success) {
             return ResponseEntity.ok(data);
         }
@@ -77,10 +80,11 @@ public class BookController {
     public ResponseEntity<ServicesResponse<Book>> UpdateBook(@PathVariable(value = "Id") Integer Id, @RequestBody AddBookDto book) {
         return ResponseEntity.ok(_bookService.Update(Id, book));
     }
+
     // update specific details
     @PatchMapping("/Book/{id}")
-    public  ResponseEntity<ServicesResponse<Book>> updateProductFields(@PathVariable int id,@RequestBody Map<String, Object> fields){
-        return ResponseEntity.ok(_bookService .updateProductByFields(id,fields));
+    public ResponseEntity<ServicesResponse<Book>> updateProductFields(@PathVariable int id, @RequestBody Map<String, Object> fields) {
+        return ResponseEntity.ok(_bookService.updateProductByFields(id, fields));
     }
 
 }

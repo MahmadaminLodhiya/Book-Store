@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface IBookService {
 
-    ServicesResponse<List<Book>> GetAllBook();
+    ServicesResponse<List<Book>> GetAllBook(Integer pageNumber , Integer pageSize);
     ServicesResponse<String> AddBook(AddBookDto book);
     ServicesResponse<Optional<Book>> Delete(Integer id);
     ServicesResponse<BookDto>GetById(Integer id);

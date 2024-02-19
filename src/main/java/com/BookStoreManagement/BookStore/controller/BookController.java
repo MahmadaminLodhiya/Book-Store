@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -70,6 +71,9 @@ public class BookController {
     public ResponseEntity<ServicesResponse<Book>> UpdateBook(@PathVariable(value = "Id") Integer Id, @RequestBody AddBookDto book) {
         return ResponseEntity.ok(_bookService.Update(Id, book));
     }
-
+    @PatchMapping("/Book/{id}")
+    public  ResponseEntity<ServicesResponse<Book>> updateProductFields(@PathVariable int id,@RequestBody Map<String, Object> fields){
+        return ResponseEntity.ok(_bookService .updateProductByFields(id,fields));
+    }
 
 }

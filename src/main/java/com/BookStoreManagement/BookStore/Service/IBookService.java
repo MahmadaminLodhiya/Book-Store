@@ -15,5 +15,5 @@ public interface IBookService {
     ServicesResponse<Optional<Book>> delete(Integer id);
     ServicesResponse<BookDto> getbyid(Integer id);
     ServicesResponse<BookDto> getbytital(String tital);
-     ServicesResponse<Book> update(Integer id, Book book);
+     ServicesResponse<Book> update(Integer id, AddBookDto book);
 }

@@ -30,7 +30,7 @@ public class BookController {
         return ResponseEntity.badRequest().body(data);
     }
 
-    @DeleteMapping(value = "/book/{Id}")
+    @DeleteMapping(value = "/Book/{Id}")
     public ResponseEntity<ServicesResponse<Optional<Book>>> deletBook(@PathVariable Integer Id) {
         ServicesResponse<Optional<Book>> data = _bookService.delete(Id);
         if (data.Success) {
@@ -39,7 +39,7 @@ public class BookController {
         return ResponseEntity.badRequest().body(data);
     }
 
-    @GetMapping(value = "/bookById/{Id}")
+    @GetMapping(value = "/BookById/{Id}")
     public ResponseEntity<ServicesResponse<BookDto>> BookByid(@PathVariable Integer Id) {
         ServicesResponse<BookDto> data = _bookService.getbyid(Id);
         if (data.Success) {
@@ -48,7 +48,7 @@ public class BookController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping(value = "/bookByTital/{Title}")
+    @GetMapping(value = "/BookByTitale/{Title}")
     public ResponseEntity<ServicesResponse<BookDto>> BookBytital(@PathVariable String Title) {
         ServicesResponse<BookDto> data = _bookService.getbytital(Title);
 //        if(data.Success) {
@@ -66,8 +66,8 @@ public class BookController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping(path = "/book/{Id}")
-    public ResponseEntity<ServicesResponse<Book>> Updatebook(@PathVariable(value = "Id") Integer Id, @RequestBody Book book) {
+    @PutMapping(path = "/Book/{Id}")
+    public ResponseEntity<ServicesResponse<Book>> Updatebook(@PathVariable(value = "Id") Integer Id, @RequestBody AddBookDto book) {
         return ResponseEntity.ok(_bookService.update(Id, book));
     }
 

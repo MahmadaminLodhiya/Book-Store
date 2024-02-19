@@ -11,11 +11,10 @@ spring-doc:
     path: /swagger
 spring:
 
-  security:
+ jpa:
+   show-sql: true
 
-    user:
 
-      password: 6624
 
 
 

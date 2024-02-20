@@ -7,7 +7,7 @@
 ## Get list of Things
 
 # book-controller
-## get All Book 
+## get all book 
 ### Request
 
 `curl -X 'GET' \

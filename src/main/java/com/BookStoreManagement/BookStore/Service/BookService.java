@@ -35,7 +35,7 @@ public class BookService implements IBookService {
     public ServicesResponse<List<Book>> GetAllBook(Integer pageNumber, Integer pageSize) {
         ServicesResponse<List<Book>> response = new ServicesResponse<List<Book>>();
         // pagination
-        Pageable p = PageRequest.of(pageNumber,pageSize);
+        Pageable p = PageRequest.of(pageNumber, pageSize);
         Page<Book> pageBooks = _Book.findAll(p);
         response.Data = pageBooks.getContent();
         return response;
@@ -52,16 +52,17 @@ public class BookService implements IBookService {
             Author author = _Author.findById(obj.getAuthorId()).orElseThrow(
                     () -> new EntityNotFoundException("Invalid Author Id: " +
                             String.valueOf(obj.getAuthorId())));
-            Optional<Book> IsBnBook= Optional.ofNullable(_Book.findByIsbn(obj.getIsbn()));
-            if(!IsBnBook.isPresent()){
-           try {
-               Book newbook = _Book.save(obj);
-           }catch (Exception ex){
-               throw new Exception("We apologize, but we encountered an error while attempting to add the book to our database. This could be due to technical issues or invalid data provided.");
-           }
+            Optional<Book> IsBnBook = Optional.ofNullable(_Book.findByIsbn(obj.getIsbn()));
+            if (!IsBnBook.isPresent()) {
+                try {
+                    Book newbook = _Book.save(obj);
+                } catch (Exception ex) {
+                    throw new Exception("We apologize, but we encountered an error while attempting to add the book to our database. This could be due to technical issues or invalid data provided.");
+                }
 
-            response.Data = "We are pleased to inform you that the book data has been successfully added to our database.";}else {
-             throw new Exception("We regret to inform you that the ISBN you provided already exists in our database. Each ISBN must be unique to ensure accurate cataloging and inventory management.");
+                response.Data = "We are pleased to inform you that the book data has been successfully added to our database.";
+            } else {
+                throw new Exception("We regret to inform you that the ISBN you provided already exists in our database. Each ISBN must be unique to ensure accurate cataloging and inventory management.");
             }
 
         } catch (Exception ex) {
@@ -98,19 +99,17 @@ public class BookService implements IBookService {
             Book book1 = _Book.findById(id).orElseThrow(
                     () -> new EntityNotFoundException(
                             "We're sorry, but the book with the provided ID does not exist in our database or the ID is invalid."));
-            if(book.getAuthorid()!=0) {
+            if (book.getAuthorid() != 0) {
                 Author author = _Author.findById(book.getAuthorid()).orElseThrow(
                         () -> new EntityNotFoundException("We regret to inform you that the update process for the book could not be completed due to an invalid author ID. The author ID provided does not correspond to a valid author in our database."));
             }
 
-
-
-        if(book.getPrice()!=0) book1.setPrice(book.getPrice());
-        if(book.getAuthorid()!=0){
-            book1.setAuthorId(book.getAuthorid());
-        }
-            if(book.getTitle()!=null) book1.setTitle(book.getTitle());
-            if(book.getIsbn()!=null){
+            if (book.getPrice() != 0) book1.setPrice(book.getPrice());
+            if (book.getAuthorid() != 0) {
+                book1.setAuthorId(book.getAuthorid());
+            }
+            if (book.getTitle() != null) book1.setTitle(book.getTitle());
+            if (book.getIsbn() != null) {
                 book1.setIsbn(book.getIsbn());
             }
 
@@ -155,18 +154,18 @@ public class BookService implements IBookService {
         try {
             List<Book> book;
 
-                book = _Book.findByTitleIgnoreCase(title);
+            book = _Book.findByTitleIgnoreCase(title);
 
-                Author author = _Author.findById(book.get(0).getAuthorId()).orElseThrow(
-                        () -> new EntityNotFoundException("Invalid Author Id: " +
-                                String.valueOf(book.get(0).getAuthorId())));
+            Author author = _Author.findById(book.get(0).getAuthorId()).orElseThrow(
+                    () -> new EntityNotFoundException("Invalid Author Id: " +
+                            String.valueOf(book.get(0).getAuthorId())));
 
-                response.Data = new BookDto();
-                response.Data.setAuthor(author);
-                response.Data.setPrice(book.get(0).getPrice());
-                response.Data.setIsbn(book.get(0).getIsbn());
-                response.Data.setTitle(book.get(0).getTitle());
-        }catch (Exception e){
+            response.Data = new BookDto();
+            response.Data.setAuthor(author);
+            response.Data.setPrice(book.get(0).getPrice());
+            response.Data.setIsbn(book.get(0).getIsbn());
+            response.Data.setTitle(book.get(0).getTitle());
+        } catch (Exception e) {
             response.Data = null;
             response.Success = false;
             response.Message = "We're sorry, but the book you're searching for could not be found in our database. It's possible that the title or details provided may be incorrect, or the book may not be available in our inventory.";
@@ -174,6 +173,7 @@ public class BookService implements IBookService {
 
         return response;
     }
+
     public ServicesResponse<Book> updateProductByFields(int id, Map<String, Object> fields) {
         ServicesResponse<Book> response = new ServicesResponse<>();
         try {
@@ -186,14 +186,15 @@ public class BookService implements IBookService {
                     field.setAccessible(true);
                     ReflectionUtils.setField(field, existingProduct.get(), value);
                 });
-                response.Data=_Book.save(existingProduct.get());
-            }}catch (Exception ex){
+                response.Data = _Book.save(existingProduct.get());
+            }
+        } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
             response.Message = ex.getMessage();
 
         }
-        return  response;
+        return response;
 
     }
 }

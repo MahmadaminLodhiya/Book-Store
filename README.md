@@ -33,8 +33,7 @@
 
     ## Testing
     You can test the APIs using tools like Postman or cURL. Make sure the application is running before sending requests.
-
-    ## Contributors
+## Contributors
     - [Niraj Ghetiya](https://github.com/NirajGhetiya)
     - [Mahmadamin Lodhiya](https://github.com/MahmadaminLodhiya)
 

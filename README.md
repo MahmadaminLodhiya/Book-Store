@@ -1,4 +1,42 @@
+  # Bookstore Management System
 
+  ## Introduction
+  This project is a Bookstore Management System developed using Spring Boot. It provides APIs for managing books in a bookstore and utilizes Swagger for API documentation.
+
+  ## Software Requirements
+  - Java 17
+  - Gradle 7.6.3 (Binary)
+  - IntelliJ Community Edition
+
+  ## Setup Instructions
+    1. Clone the repository: https://github.com/MahmadaminLodhiya/Book-Store
+    
+    2. Open the project in IntelliJ IDEA.
+    
+    3. Configure Java 17:
+    - Go to `File` > `Project Structure`.
+    - Under `Project`, ensure that the Project SDK is set to Java 17.
+    
+    4. Configure Gradle 7.6.3:
+    - Ensure that Gradle 7.6.3(Binary) is installed and configured in IntelliJ IDEA. You can download Gradle from https://gradle.org/releases/.
+    - In IntelliJ IDEA, go to `File` > `Settings` > `Build, Execution, Deployment` > `Build Tools` > `Gradle`.
+    - Set Gradle home to the location where Gradle 7.6.3 is installed.
+
+    5. Configure Database:
+    - The project uses an in-memory H2 database by default. No additional setup is required.
+
+    6. Run the Application:
+    - Run the main application class (`BookstoreApplication`) from IntelliJ IDEA.
+
+    ## API Documentation
+    Swagger is integrated into the project for API documentation. After running the application, you can access the Swagger UI at: http://localhost:8080/swagger-ui/index.html#/
+
+    ## Testing
+    You can test the APIs using tools like Postman or cURL. Make sure the application is running before sending requests.
+
+    ## Contributors
+    - [Niraj Ghetiya](https://github.com/NirajGhetiya)
+    - [Mahmadamin Lodhiya](https://github.com/MahmadaminLodhiya)
 
 # REST API
 

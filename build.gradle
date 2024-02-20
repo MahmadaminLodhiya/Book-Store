@@ -28,6 +28,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
 
+	// email validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 }
 
 

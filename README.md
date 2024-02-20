@@ -7,6 +7,7 @@
 ## Get list of Things
 
 # book-controller
+## get All Book 
 ### Request
 
 `curl -X 'GET' \
@@ -31,7 +32,7 @@
   "Massage": "string"
  }
 ```
-
+##  get book by title
 ### Request
 
 `curl -X 'GET' \
@@ -58,6 +59,7 @@
   "Message": null
 }
 ```
+## add a new book
 ### Request
 
 `url -X 'POST' \
@@ -81,7 +83,7 @@
   "Message": "string"
 }
 ```
-
+## delete a book
 ### Request
 
 `curl -X 'DELETE' \
@@ -104,6 +106,7 @@
   "Message": "string"
 }
 ```
+## update whole book
 ### Request
 
 `curl -X 'PUT' \
@@ -130,8 +133,8 @@
   "Message": "string"
 }
 ```
-#author-controller
-
+# author-controller
+## get all the authors
 ### Request
 
 `curl -X 'GET' \
@@ -151,6 +154,7 @@
   "Message": "string"
 }
 ```
+## get all the books of the author
 ### Request
 
 `curl -X 'GET' \
@@ -172,6 +176,7 @@
   "Message": "string"
 }
 ```
+## add a new author
 ### Request
 
 `curl -X 'POST' \
@@ -190,6 +195,7 @@
   "Message": "string"
 }
 ```
+## update the whole author details
 ### Request
 
 `curl -X 'PUT' \

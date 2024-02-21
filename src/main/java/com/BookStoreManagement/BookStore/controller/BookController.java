@@ -36,7 +36,7 @@ public class BookController {
     }
 
     // delete a book
-    @DeleteMapping(value = "/Book/{Id}")
+    @DeleteMapping("/Book/{Id}")
     public ResponseEntity<ServicesResponse<Optional<Book>>> DeleteBook(@PathVariable Integer Id) {
         ServicesResponse<Optional<Book>> data = _bookService.Delete(Id);
         if (data.Success) {
@@ -46,23 +46,13 @@ public class BookController {
     }
 
     // get book by id
-    @GetMapping(value = "/BookById/{Id}")
+    @GetMapping("/BookById/{Id}")
     public ResponseEntity<ServicesResponse<BookDto>> BookById(@PathVariable Integer Id) {
         ServicesResponse<BookDto> data = _bookService.GetById(Id);
         if (data.Success) {
             return ResponseEntity.ok(_bookService.GetById(Id));
         }
         return ResponseEntity.notFound().build();
-    }
-
-    // get book by title
-    @GetMapping(value = "/BookByTitle/{Title}")
-    public ResponseEntity<ServicesResponse<BookDto>> BookByTitle(@PathVariable String Title) {
-        ServicesResponse<BookDto> data = _bookService.GetByTitle(Title);
-//        if(data.Success) {
-        return ResponseEntity.ok(data);
-//        }
-//        return ResponseEntity.notFound().build();
     }
 
     // get all books
@@ -82,15 +72,29 @@ public class BookController {
     }
 
     // update whole book
-    @PutMapping(path = "/Book/{Id}")
+    @PutMapping("/Book/{Id}")
     public ResponseEntity<ServicesResponse<Book>> UpdateBook(@PathVariable(value = "Id") Integer Id, @RequestBody AddBookDto book) {
         return ResponseEntity.ok(_bookService.Update(Id, book));
     }
 
     // update specific details
     @PatchMapping("/Book/{id}")
-    public ResponseEntity<ServicesResponse<Book>> updateProductFields(@PathVariable int id, @RequestBody Map<String, Object> fields) {
+    public ResponseEntity<ServicesResponse<Book>> UpdateProductFields(@PathVariable int id, @RequestBody Map<String, Object> fields) {
         return ResponseEntity.ok(_bookService.updateProductByFields(id, fields));
     }
 
+    @GetMapping("/SearchBook")
+    public ResponseEntity<ServicesResponse<PagingResponse<List<Book>>>> SearchBooks(
+            @RequestParam(name = "searchTerm", required = false) String searchTerm,
+            @RequestParam(name = "pageNumber", defaultValue = "1") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(value = "Sort By" , required = false, defaultValue = "price")SortBy sortBy,
+            @RequestParam(value = "Order By" , required = false, defaultValue = "asc")OrderBy orderBy
+    ){
+        ServicesResponse<PagingResponse<List<Book>>> data = _bookService.SearchBook(searchTerm,pageNumber, pageSize,sortBy,orderBy);
+        if (data.Success) {
+            return ResponseEntity.ok(data);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

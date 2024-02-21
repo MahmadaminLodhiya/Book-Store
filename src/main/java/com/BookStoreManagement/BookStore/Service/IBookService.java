@@ -18,7 +18,8 @@ public interface IBookService {
     ServicesResponse<String> AddBook(AddBookDto book);
     ServicesResponse<Optional<Book>> Delete(Integer id);
     ServicesResponse<BookDto>GetById(Integer id);
-    ServicesResponse<BookDto> GetByTitle(String title);
-     ServicesResponse<Book> Update(Integer id, AddBookDto book);
+    ServicesResponse<PagingResponse<List<Book>>> SearchBook(String title, Integer pageNumber, Integer pageSize,SortBy sortBy, OrderBy orderBy);
+
+    ServicesResponse<Book> Update(Integer id, AddBookDto book);
     ServicesResponse<Book> updateProductByFields(int id, Map<String, Object> fields);
 }

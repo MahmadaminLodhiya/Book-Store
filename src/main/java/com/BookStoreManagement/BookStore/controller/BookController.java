@@ -2,10 +2,13 @@ package com.BookStoreManagement.BookStore.controller;
 
 import com.BookStoreManagement.BookStore.Dto.AddBookDto;
 import com.BookStoreManagement.BookStore.Dto.BookDto;
+import com.BookStoreManagement.BookStore.Dto.PagingResponse;
 import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
 import com.BookStoreManagement.BookStore.Entity.Book;
 
 import com.BookStoreManagement.BookStore.Service.IBookService;
+import com.BookStoreManagement.BookStore.enums.OrderBy;
+import com.BookStoreManagement.BookStore.enums.SortBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,11 +67,14 @@ public class BookController {
 
     // get all books
     @GetMapping("/AllBook")
-    public ResponseEntity<ServicesResponse<List<Book>>> GetAllBook(
-            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber ,
-            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
+    public ResponseEntity<ServicesResponse<PagingResponse<List<Book>>>> GetAllBook(
+            @RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber ,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+            @RequestParam(value = "Sort By" , required = false, defaultValue = "price")SortBy sortBy,
+            @RequestParam(value = "Order By" , required = false, defaultValue = "asc")OrderBy orderBy
+            ) {
 
-        ServicesResponse<List<Book>> data = _bookService.GetAllBook(pageNumber, pageSize);
+        ServicesResponse<PagingResponse<List<Book>>> data = _bookService.GetAllBook(pageNumber, pageSize,sortBy,orderBy);
         if (data.Success) {
             return ResponseEntity.ok(data);
         }

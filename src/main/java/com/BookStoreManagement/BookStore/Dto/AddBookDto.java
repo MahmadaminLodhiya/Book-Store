@@ -6,6 +6,15 @@ public class AddBookDto {
     private String Isbn;
     private int price;
     private int authorid;
+    private int publishedYear;
+
+    public int getPublishedYear() {
+        return publishedYear;
+    }
+
+    public void setPublishedYear(int publishedYear) {
+        this.publishedYear = publishedYear;
+    }
 
     public String getTitle() {
         return Title;

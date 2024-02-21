@@ -25,6 +25,11 @@ public class Author {
         email = author.getEmail();
     }
 
+    public Author(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
     public int getId() {
         return id;
     }

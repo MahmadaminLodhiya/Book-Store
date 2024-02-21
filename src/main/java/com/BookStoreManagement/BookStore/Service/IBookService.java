@@ -2,8 +2,11 @@ package com.BookStoreManagement.BookStore.Service;
 
 import com.BookStoreManagement.BookStore.Dto.AddBookDto;
 import com.BookStoreManagement.BookStore.Dto.BookDto;
+import com.BookStoreManagement.BookStore.Dto.PagingResponse;
 import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
 import com.BookStoreManagement.BookStore.Entity.Book;
+import com.BookStoreManagement.BookStore.enums.OrderBy;
+import com.BookStoreManagement.BookStore.enums.SortBy;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +14,7 @@ import java.util.Optional;
 
 public interface IBookService {
 
-    ServicesResponse<List<Book>> GetAllBook(Integer pageNumber , Integer pageSize);
+    ServicesResponse<PagingResponse<List<Book>>> GetAllBook(Integer pageNumber , Integer pageSize, SortBy sortBy, OrderBy orderBy);
     ServicesResponse<String> AddBook(AddBookDto book);
     ServicesResponse<Optional<Book>> Delete(Integer id);
     ServicesResponse<BookDto>GetById(Integer id);

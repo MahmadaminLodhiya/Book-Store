@@ -22,8 +22,8 @@ public class AuthorController {
 
     // add a new author
     @PostMapping("/Author")
-    public ResponseEntity<ServicesResponse<String>> AddAuthor(@RequestBody AuthorDto author) {
-        ServicesResponse<String> data = _authors.AddAuthor(author);
+    public ResponseEntity<ServicesResponse<Author>> AddAuthor(@RequestBody AuthorDto author) {
+        ServicesResponse<Author> data = _authors.AddAuthor(author);
         if (data.Success)
             return ResponseEntity.ok(data);
         return ResponseEntity.badRequest().body(data);

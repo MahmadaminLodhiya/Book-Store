@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IAuthoreService {
-    ServicesResponse<String> AddAuthor(AuthorDto author);
+    ServicesResponse<Author> AddAuthor(AuthorDto author);
 
     ServicesResponse<List<Author>> GetAllAuthor();
 

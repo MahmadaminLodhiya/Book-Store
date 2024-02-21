@@ -13,6 +13,23 @@ public class Book {
     public int getId() {
         return id;
     }
+    public int publishedYear;
+
+    public int getPublishedYear() {
+        return publishedYear;
+    }
+
+    public void setPublishedYear(int publishedYear) {
+        this.publishedYear = publishedYear;
+    }
+    public Book(){}
+    public Book(int publishedYear, String title, int authorId, String isbn, int price) {
+        this.publishedYear = publishedYear;
+        this.title = title;
+        AuthorId = authorId;
+        this.isbn = isbn;
+        this.price = price;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -28,15 +45,6 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-    public int publishedYear;
-
-    public int getPublishedYear() {
-        return publishedYear;
-    }
-
-    public void setPublishedYear(int publishedYear) {
-        this.publishedYear = publishedYear;
     }
 
     private String title;
@@ -70,13 +78,5 @@ public class Book {
     }
 
     private int price;
-    public Book(){}
 
-    public Book(int publishedYear, String title, int authorId, String isbn, int price) {
-        this.publishedYear = publishedYear;
-        this.title = title;
-        AuthorId = authorId;
-        this.isbn = isbn;
-        this.price = price;
-    }
 }

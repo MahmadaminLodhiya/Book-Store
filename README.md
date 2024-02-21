@@ -8,7 +8,7 @@
   - Gradle 7.6.3 (Binary)
   - IntelliJ Community Edition
 
-  ## Setup Instructions
+## Setup Instructions
     1. Clone the repository: https://github.com/MahmadaminLodhiya/Book-Store
     
     2. Open the project in IntelliJ IDEA.

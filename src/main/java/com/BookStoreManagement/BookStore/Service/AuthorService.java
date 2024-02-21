@@ -27,16 +27,16 @@ public class AuthorService implements IAuthoreService {
         _books = books;
     }
 
-    public ServicesResponse<String> AddAuthor(AuthorDto authorDto) {
-        ServicesResponse<String> response = new ServicesResponse<>();
+    public ServicesResponse<Author> AddAuthor(AuthorDto authorDto) {
+        ServicesResponse<Author> response = new ServicesResponse<>();
         try {
             List<Author> authors = _author.findByEmail(authorDto.getEmail());
             if (!authors.isEmpty()) {
                 throw new IllegalArgumentException("Email already available!!");
             }
             Author author1 = new Author(authorDto);
-            _author.save(author1);
-            response.Data = authorDto.getName() + " Author Added!";
+
+            response.Data =  _author.save(author1);
 
         } catch (Exception e) {
             response.Data = null;

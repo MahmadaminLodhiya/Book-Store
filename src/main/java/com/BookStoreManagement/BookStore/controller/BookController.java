@@ -1,9 +1,6 @@
 package com.BookStoreManagement.BookStore.controller;
 
-import com.BookStoreManagement.BookStore.Dto.AddBookDto;
-import com.BookStoreManagement.BookStore.Dto.BookDto;
-import com.BookStoreManagement.BookStore.Dto.PagingResponse;
-import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
+import com.BookStoreManagement.BookStore.Dto.*;
 import com.BookStoreManagement.BookStore.Entity.Book;
 
 import com.BookStoreManagement.BookStore.Service.IBookService;
@@ -27,8 +24,8 @@ public class BookController {
 
     // add a new book
     @PostMapping("/AddBook")
-    public ResponseEntity<ServicesResponse<String>> AddNewBook(@RequestBody AddBookDto book) {
-        ServicesResponse<String> data = _bookService.AddBook(book);
+    public ResponseEntity<ServicesResponse<Book>> AddNewBook(@RequestBody AddBookDto book) {
+        ServicesResponse<Book> data = _bookService.AddBook(book);
         if (data.Success) {
             return ResponseEntity.ok(data);
         }
@@ -83,15 +80,19 @@ public class BookController {
         return ResponseEntity.ok(_bookService.updateProductByFields(id, fields));
     }
 
-    @GetMapping("/SearchBook")
+    @GetMapping("/SearchBook{priceRange}")
     public ResponseEntity<ServicesResponse<PagingResponse<List<Book>>>> SearchBooks(
             @RequestParam(name = "searchTerm", required = false) String searchTerm,
             @RequestParam(name = "pageNumber", defaultValue = "1") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(value = "Sort By" , required = false, defaultValue = "price")SortBy sortBy,
-            @RequestParam(value = "Order By" , required = false, defaultValue = "asc")OrderBy orderBy
-    ){
-        ServicesResponse<PagingResponse<List<Book>>> data = _bookService.SearchBook(searchTerm,pageNumber, pageSize,sortBy,orderBy);
+            @RequestParam(value = "Order By" , required = false, defaultValue = "asc")OrderBy orderBy,
+            @RequestParam(value = "minPrice" , required = false, defaultValue = "0") Integer minPrice,
+            @RequestParam(value = "maxPrice", required = false, defaultValue = "0") Integer maxPrice,
+            @RequestParam(value = "minYear" , required = false, defaultValue = "0") Integer minYear,
+            @RequestParam(value = "maxYear", required = false, defaultValue = "0") Integer maxYear
+            ){
+        ServicesResponse<PagingResponse<List<Book>>> data = _bookService.SearchBook(searchTerm,pageNumber, pageSize,sortBy,orderBy,minPrice,maxPrice,minYear,maxYear);
         if (data.Success) {
             return ResponseEntity.ok(data);
         }

@@ -1,9 +1,6 @@
 package com.BookStoreManagement.BookStore.Service;
 
-import com.BookStoreManagement.BookStore.Dto.AddBookDto;
-import com.BookStoreManagement.BookStore.Dto.BookDto;
-import com.BookStoreManagement.BookStore.Dto.PagingResponse;
-import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
+import com.BookStoreManagement.BookStore.Dto.*;
 import com.BookStoreManagement.BookStore.Entity.Author;
 import com.BookStoreManagement.BookStore.Entity.Book;
 import com.BookStoreManagement.BookStore.Repository.AuthorRepository;
@@ -43,6 +40,7 @@ public class BookService implements IBookService {
         _Author = authorRepository;
     }
 
+    @Override
     public ServicesResponse<PagingResponse<List<Book>>> GetAllBook(Integer pageNumber, Integer pageSize, SortBy sortBy, OrderBy orderBy) {
         // last final response
         ServicesResponse<PagingResponse<List<Book>>> response = new ServicesResponse<>();
@@ -59,13 +57,15 @@ public class BookService implements IBookService {
 
         pagingResponse.TotalPage = totalPages;
         pagingResponse.CurrentPage = pageNumber;
+        pagingResponse.ElementsInCurrentPage = pageBooks.getContent().size();
         pagingResponse.Data = pageBooks.getContent();
         response.Data = pagingResponse;
         return response;
     }
 
-    public ServicesResponse<String> AddBook(AddBookDto book) {
-        ServicesResponse<String> response = new ServicesResponse<>();
+    @Override
+    public ServicesResponse<Book> AddBook(AddBookDto book) {
+        ServicesResponse<Book> response = new ServicesResponse<>();
         try {
             Book obj = new Book();
             obj.setAuthorId(book.getAuthorid());
@@ -83,12 +83,11 @@ public class BookService implements IBookService {
                 } catch (Exception ex) {
                     throw new Exception("We apologize, but we encountered an error while attempting to add the book to our database. This could be due to technical issues or invalid data provided.");
                 }
-                response.Data = "BookId " + obj.getId() + " Added!";
+                response.Data = obj;
                 response.Message = "We are pleased to inform you that the book data has been successfully added to our database.";
             } else {
                 throw new Exception("We regret to inform you that the ISBN you provided already exists in our database. Each ISBN must be unique to ensure accurate cataloging and inventory management.");
             }
-
         } catch (Exception ex) {
             response.Data = null;
             response.Success = false;
@@ -197,7 +196,7 @@ public class BookService implements IBookService {
         return response;
     }
 
-    public ServicesResponse<PagingResponse<List<Book>>> SearchBook(String searchWord, Integer pageNumber, Integer pageSize, SortBy sortBy, OrderBy orderBy) {
+    public ServicesResponse<PagingResponse<List<Book>>> SearchBook(String searchTerm, Integer pageNumber, Integer pageSize, SortBy sortBy, OrderBy orderBy, Integer minPrice, Integer maxPrice, Integer minYear, Integer maxYear) {
         ServicesResponse<PagingResponse<List<Book>>> response = new ServicesResponse<>();
         PagingResponse<List<Book>> pagingResponse = new PagingResponse<>();
         try {
@@ -210,9 +209,20 @@ public class BookService implements IBookService {
                     List<Predicate> predicates = new ArrayList<>();
 
                     // Search by title or word in title
-                    if (searchWord != null && !searchWord.isEmpty()) {
-                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), "%" + searchWord.toLowerCase() + "%"));
+                    if (searchTerm != null && !searchTerm.isEmpty()) {
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), "%" + searchTerm.toLowerCase() + "%"));
                     }
+
+                    // Filtering based on price range
+                    if(minPrice!= 0 && maxPrice!=0){
+                        predicates.add(criteriaBuilder.between(root.get("price"),minPrice,maxPrice));
+                    }
+
+                    // Filtering based on published year range
+                    if(minYear!=0 && maxYear!=0){
+                        predicates.add(criteriaBuilder.between(root.get("publishedYear"),minYear,maxYear));
+                    }
+
                     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                 }
             }, pageable);
@@ -222,6 +232,7 @@ public class BookService implements IBookService {
 
             pagingResponse.TotalPage = totalPages;
             pagingResponse.CurrentPage = pageNumber;
+            pagingResponse.ElementsInCurrentPage = pageBooks.getContent().size();
             pagingResponse.Data = pageBooks.getContent();
 
             response.Data = pagingResponse;

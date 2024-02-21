@@ -39,18 +39,18 @@ public class DataInitializar implements CommandLineRunner {
 
         String[] titles = {
                 "Rich dad Poor Dad","The Great Escape", "Into the Wild", "The Art of War", "Pride and Prejudice",
-                "To Kill a Mockingbird", "4 Hour Work Week", "Brave New World", "The Catcher in the Rye",
-                "The Great Gatsby", "Moby Dick", "War and Peace", "Hamlet", "The Odyssey",
-                "Crime and Punishment", "Wuthering Heights", "Jane Eyre", "The Divine Comedy",
-                "The Brothers Karamazov", "Les Misérables", "A Tale of Two Cities",
-                "Sense and Sensibility", "Anna Karenina", "The Adventures of Huckleberry Finn",
-                "Great Expectations", "The Scarlet Letter", "The Secret Garden", "Frankenstein",
-                "Dracula", "The Picture of Dorian Gray", "Heart of Darkness",
+                "Richest Man in Babylon", "4 Hour Work Week", "How to Win Friends and Influence People", "The Catcher in the Rye",
+                "Energize your Mind", "Moby Dick", "The 48 Laws of Power", "Rework", "The Secret",
+                "Crime and Punishment", "The Laws of Happiness", "Atomic Habit", "Habit of Highly Effective Peoples",
+                "Atomic Habit 2", "The Power of Subconscious Mind", "A Tale of Two Cities",
+                "The Millionaire Fastlane ", "Think and Grow Rich", "The Psychology of Money",
+                "Great Expectations", "The Scarlet Letter", "The Secret Garden", "The 5Am Club",
+                "Dracula", "Deep Work", "Rich dad Poor Dad Latest",
                 "Alices Adventures in Wonderland", "Little Women", "The Count of Monte Cristo",
-                "Don Quixote", "Macbeth", "A Midsummer Night's Dream", "Romeo and Juliet",
-                "The Merchant of Venice", "Othello", "The Tempest",
+                "Don Quixote", "The Alchemist", "A Midsummer Night's Dream", "Romeo and Juliet",
+                "The Merchant of Venice", "Othello", "Rich dad Poor Dad",
                 "The Iliad", "The Aeneid", "Paradise Lost", "Faust", "The Waste Land",
-                "Leaves of Grass", "The Sun Also Rises", "Lolita", "Ulysses"
+                "Leaves of Grass", "The Sun Also Rises", "Ikigai", "Mastery"
         };
         Random random = new Random();
         for (int i = 0; i < 50; i++) {

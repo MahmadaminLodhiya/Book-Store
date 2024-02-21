@@ -2,6 +2,7 @@ package com.BookStoreManagement.BookStore.Service;
 
 import com.BookStoreManagement.BookStore.Dto.AddBookDto;
 import com.BookStoreManagement.BookStore.Dto.BookDto;
+import com.BookStoreManagement.BookStore.Dto.PagingResponse;
 import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
 import com.BookStoreManagement.BookStore.Entity.Author;
 import com.BookStoreManagement.BookStore.Entity.Book;
@@ -10,9 +11,12 @@ import com.BookStoreManagement.BookStore.Repository.BookRepository;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.BookStoreManagement.BookStore.enums.OrderBy;
+import com.BookStoreManagement.BookStore.enums.SortBy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -32,12 +36,24 @@ public class BookService implements IBookService {
         _Author = authorRepository;
     }
 
-    public ServicesResponse<List<Book>> GetAllBook(Integer pageNumber, Integer pageSize) {
-        ServicesResponse<List<Book>> response = new ServicesResponse<List<Book>>();
+    public ServicesResponse<PagingResponse<List<Book>>> GetAllBook(Integer pageNumber, Integer pageSize, SortBy sortBy, OrderBy orderBy) {
+        // last final response
+        ServicesResponse<PagingResponse<List<Book>>> response = new ServicesResponse<>();
+        // pagingResponse
+        PagingResponse<List<Book>> pagingResponse = new PagingResponse<>();
+
+        int totalBooks = _Book.findAll().size();
+        int totalPages = totalBooks % pageSize == 0 ? totalBooks/pageSize : totalBooks/pageSize+1;
+
         // pagination
-        Pageable p = PageRequest.of(pageNumber, pageSize);
+        Sort.Direction sortOrder = orderBy.name().equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable p = PageRequest.of(pageNumber-1, pageSize, Sort.by(sortOrder,(sortBy.name())));
         Page<Book> pageBooks = _Book.findAll(p);
-        response.Data = pageBooks.getContent();
+
+        pagingResponse.TotalPage = totalPages;
+        pagingResponse.CurrentPage = pageNumber;
+        pagingResponse.Data = pageBooks.getContent();
+        response.Data = pagingResponse;
         return response;
     }
 
@@ -49,6 +65,7 @@ public class BookService implements IBookService {
             obj.setPrice(book.getPrice());
             obj.setIsbn(book.getIsbn());
             obj.setTitle(book.getTitle());
+            obj.setPublishedYear(book.getPublishedYear());
             Author author = _Author.findById(obj.getAuthorId()).orElseThrow(
                     () -> new EntityNotFoundException("Invalid Author Id: " +
                             String.valueOf(obj.getAuthorId())));
@@ -59,8 +76,8 @@ public class BookService implements IBookService {
                 } catch (Exception ex) {
                     throw new Exception("We apologize, but we encountered an error while attempting to add the book to our database. This could be due to technical issues or invalid data provided.");
                 }
-
-                response.Data = "We are pleased to inform you that the book data has been successfully added to our database.";
+                response.Data = "BookId "+obj.getId()+" Added!";
+                response.Message = "We are pleased to inform you that the book data has been successfully added to our database.";
             } else {
                 throw new Exception("We regret to inform you that the ISBN you provided already exists in our database. Each ISBN must be unique to ensure accurate cataloging and inventory management.");
             }
@@ -112,6 +129,7 @@ public class BookService implements IBookService {
             if (book.getIsbn() != null) {
                 book1.setIsbn(book.getIsbn());
             }
+            if (book.getPublishedYear()!=0) book1.setPublishedYear(book.getPublishedYear());
 
             response.Data = _Book.save(book1);
 
@@ -139,6 +157,7 @@ public class BookService implements IBookService {
             response.Data.setPrice(book.getPrice());
             response.Data.setIsbn(book.getIsbn());
             response.Data.setTitle(book.getTitle());
+            response.Data.setPublishedYear(book.getPublishedYear());
 
         } catch (Exception ex) {
             response.Data = null;
@@ -165,12 +184,12 @@ public class BookService implements IBookService {
             response.Data.setPrice(book.get(0).getPrice());
             response.Data.setIsbn(book.get(0).getIsbn());
             response.Data.setTitle(book.get(0).getTitle());
+
         } catch (Exception e) {
             response.Data = null;
             response.Success = false;
             response.Message = "We're sorry, but the book you're searching for could not be found in our database. It's possible that the title or details provided may be incorrect, or the book may not be available in our inventory.";
         }
-
         return response;
     }
 

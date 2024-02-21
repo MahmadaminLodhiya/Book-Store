@@ -42,4 +42,13 @@ public class BookDto {
     private String Isbn;
     private int price;
     private Author author;
+    private int publishedYear;
+
+    public int getPublishedYear() {
+        return publishedYear;
+    }
+
+    public void setPublishedYear(int publishedYear) {
+        this.publishedYear = publishedYear;
+    }
 }

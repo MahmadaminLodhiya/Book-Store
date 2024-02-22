@@ -80,7 +80,7 @@ public class BookController {
         return ResponseEntity.ok(_bookService.updateProductByFields(id, fields));
     }
 
-    @GetMapping("/SearchBook{priceRange}")
+    @GetMapping("/SearchBook")
     public ResponseEntity<ServicesResponse<PagingResponse<List<Book>>>> SearchBooks(
             @RequestParam(name = "searchTerm", required = false) String searchTerm,
             @RequestParam(name = "pageNumber", defaultValue = "1") Integer pageNumber,

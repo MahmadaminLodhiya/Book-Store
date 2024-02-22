@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 class AuthorServiceTest {
     @Autowired
@@ -26,21 +27,23 @@ class AuthorServiceTest {
     @Autowired
     private AuthorRepository _authorRepository;
     Map<String, Object> MAP1;
+
     @BeforeEach
     void setup() {
         MAP1 = new HashMap<>();
         MAP1.put("name", "niraj");
         MAP1.put("email", "test@book.com");
     }
+
     @Test
     void addAuthor() {
         AuthorDto authorDto = new AuthorDto();
         authorDto.setEmail("niraj.ghetiya@gmail.com");
         authorDto.setName("niraj");
-        ServicesResponse<Author> test =_authorService.AddAuthor(authorDto);
-       Optional<Author> newAuthor = _authorRepository.findById(test.Data.getId());
-       assertThat(newAuthor.get().getName()).isEqualTo(authorDto.getName());
-       assertThat(newAuthor.get().getEmail()).isEqualTo(authorDto.getEmail());
+        ServicesResponse<Author> test = _authorService.AddAuthor(authorDto);
+        Optional<Author> newAuthor = _authorRepository.findById(test.Data.getId());
+        assertThat(newAuthor.get().getName()).isEqualTo(authorDto.getName());
+        assertThat(newAuthor.get().getEmail()).isEqualTo(authorDto.getEmail());
         assertThat(test.Success).isTrue();
     }
 
@@ -56,7 +59,7 @@ class AuthorServiceTest {
         AuthorDto authorDto = new AuthorDto();
         authorDto.setEmail("niraj@gmail.com");
         authorDto.setName("niraj");
-        ServicesResponse<Author> test = _authorService.UpdateAuthor(1,authorDto);
+        ServicesResponse<Author> test = _authorService.UpdateAuthor(1, authorDto);
         assertThat(test.Success).isTrue();
         assertThat(test.Data.getEmail()).isEqualTo(authorDto.getEmail());
         assertThat(test.Data.getName()).isEqualTo(authorDto.getName());
@@ -66,7 +69,7 @@ class AuthorServiceTest {
     void getAllBookOfAuthor() {
         ServicesResponse<List<Book>> test = _authorService.GetAllBookOfAuthor(1);
         assertThat(test.Success).isTrue();
-        for(Book book :test.Data){
+        for (Book book : test.Data) {
             assertThat(book.getAuthorId()).isEqualTo(1);
         }
     }
@@ -83,7 +86,7 @@ class AuthorServiceTest {
 
     @Test
     void updateSpecificField() {
-        ServicesResponse<Author> test =_authorService.UpdateSpecificField(2,MAP1);
+        ServicesResponse<Author> test = _authorService.UpdateSpecificField(2, MAP1);
         Optional<Author> author = _authorRepository.findById(1);
         assertThat(test.Success).isTrue();
         assertThat(test.Data.getName()).isEqualTo(MAP1.get("name"));

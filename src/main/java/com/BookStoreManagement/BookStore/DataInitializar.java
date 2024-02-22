@@ -23,11 +23,11 @@ public class DataInitializar implements CommandLineRunner {
 
         List<Author> authors = new ArrayList<>();
 
-        authors.add(new Author("Emily Dickinson", "emily.dickinson@example.com"));
-        authors.add(new Author("Mark Twain", "mark.twain@example.com"));
-        authors.add(new Author("Jane Austen", "jane.austen@example.com"));
-        authors.add(new Author("Ernest Hemingway", "ernest.hemingway@example.com"));
-        authors.add(new Author("Virginia Woolf", "virginia.woolf@example.com"));
+        authors.add(new Author("Robert Kiyosaki", "robert.kiyosaki@example.com"));
+        authors.add(new Author("Robert Greene", "robert.greene@example.com"));
+        authors.add(new Author("Tim Ferries", "tim.ferries@example.com"));
+        authors.add(new Author("Dale Carnegie", "dale.carnegie@example.com"));
+        authors.add(new Author("James Clear", "james.clear@example.com"));
         authors.add(new Author("F. Scott Fitzgerald", "f.scott.fitzgerald@example.com"));
         authors.add(new Author("Charles Dickens", "charles.dickens@example.com"));
         authors.add(new Author("Harper Lee", "harper.lee@example.com"));

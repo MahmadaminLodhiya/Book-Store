@@ -1,6 +1,7 @@
 package com.BookStoreManagement.BookStore.Service;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
+import com.BookStoreManagement.BookStore.Dto.AddBookDto;
 import com.BookStoreManagement.BookStore.Dto.BookDto;
 import com.BookStoreManagement.BookStore.Dto.PagingResponse;
 import com.BookStoreManagement.BookStore.Dto.ServicesResponse;
@@ -29,7 +30,7 @@ class BookServiceTest {
 
 
     Map<String, Object> MAP1;
-    Book b1;
+
     Author a1;
     @Autowired
     private BookRepository _bookRepository;
@@ -45,7 +46,7 @@ class BookServiceTest {
         MAP1.put("title", "test");
         MAP1.put("isbn", "987-654-321");
 //        MAP1.put("authorId", 2);
-        b1 = new Book();
+
         a1 = new Author();
 
 
@@ -66,11 +67,33 @@ class BookServiceTest {
     @Test
     void addBook() {
 
+        AddBookDto book = new AddBookDto();
+        book.setTitle("xyz");
+        book.setIsbn("963.-852-741-36");
+        book.setAuthorid(2);
+        book.setPrice(500);
+
+        ServicesResponse<Book> test = _bookService.AddBook(book);
+        assertThat(test.Success).isTrue();
+        assertThat(test.Data.getTitle()).isEqualTo(book.getTitle());
     }
 
 
     @Test
     void update() {
+        AddBookDto book = new AddBookDto();
+        book.setTitle("xyza");
+        book.setIsbn("456.-852-741-36");
+        book.setAuthorid(2);
+        book.setPrice(500);
+        ServicesResponse<Book> test =_bookService.Update(10,book);
+        assertThat(test.Success).isTrue();
+        assertThat(test.Data.getTitle()).isEqualTo(book.getTitle());
+        assertThat(test.Data.getPrice()).isEqualTo(book.getPrice());
+        assertThat(test.Data.getIsbn()).isEqualTo(book.getIsbn());
+        assertThat(test.Data.getAuthorId()).isEqualTo(book.getAuthorid());
+
+
     }
 
     @Test
@@ -87,10 +110,6 @@ class BookServiceTest {
         assertThat(test.Data.getPrice()).isEqualTo(book.get().getPrice());
     }
 
-    @Test
-    void getByTitle() {
-
-    }
 
     @Test
     void updateProductByFields() {
